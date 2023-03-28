@@ -16,6 +16,7 @@ import com.notch.heist.rest.dto.SkillDTO;
 import com.notch.heist.service.EmailService;
 import com.notch.heist.service.MemberService;
 import com.notch.heist.service.SkillService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -30,11 +31,12 @@ import java.util.stream.Collectors;
 @Service
 public class MemberServiceImpl implements MemberService {
 
+    @Value("${heist.levelUpTime}")
+    private long levelUpTime;
+
     private final MemberRepository memberRepository;
     private final SkillRepository skillRepository;
-
     private final SkillService skillService;
-
     private final MemberSkillRepository memberSkillRepository;
     private final EmailService emailService;
     private final MemberMapper memberMapper;
@@ -216,5 +218,25 @@ public class MemberServiceImpl implements MemberService {
                     member.setStatus(Math.random() > 0.5 ? MemberStatus.EXPIRED : MemberStatus.INCARCERATED);
                     return memberRepository.save(member);
                 }).collect(Collectors.toSet());
+    }
+
+    @Override
+    public void updateMembersSkillAfterHeist(Set<Member> membersSet, Set<HeistSkill> skills, int seconds) {
+        for (Member member : membersSet) {
+            member.getSkills().stream()
+                    .filter(memberSkill -> skills.stream()
+                            .anyMatch(heistSkill -> heistSkill.getSkill().getName().equals(memberSkill.getSkill().getName())))
+                    .forEach(memberSkill -> {
+                        int totalTimeSpentOnHeist = memberSkill.getTimeSpentOnHeist() + seconds;
+                        memberSkill.setTimeSpentOnHeist(totalTimeSpentOnHeist);
+                        if (totalTimeSpentOnHeist >= levelUpTime) {
+                            int levelsToAdd = (int) (totalTimeSpentOnHeist / levelUpTime);
+                            memberSkill.setTimeSpentOnHeist((int) (totalTimeSpentOnHeist % levelUpTime));
+                            memberSkill.setLevel(memberSkill.getLevel() + "*".repeat(levelsToAdd));
+                            memberSkill.setLevel(memberSkill.getLevel().substring(0, Math.min(memberSkill.getLevel().length(), 10)));
+                        }
+                    });
+            memberRepository.save(member);
+        }
     }
 }

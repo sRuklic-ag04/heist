@@ -46,3 +46,6 @@ logging:
 
   level.org:
     springframework.data.jpa: TRACE
+
+heist:
+  levelUpTime: 86400

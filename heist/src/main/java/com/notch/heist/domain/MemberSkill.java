@@ -25,6 +25,8 @@ public class MemberSkill {
     @Column(length = 10)
     private String level;
 
+    private int timeSpentOnHeist;
+
     public Long getMemberId() {
         return memberId;
     }
@@ -63,5 +65,13 @@ public class MemberSkill {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+    public int getTimeSpentOnHeist() {
+        return timeSpentOnHeist;
+    }
+
+    public void setTimeSpentOnHeist(int timeSpentOnHeist) {
+        this.timeSpentOnHeist = timeSpentOnHeist;
     }
 }

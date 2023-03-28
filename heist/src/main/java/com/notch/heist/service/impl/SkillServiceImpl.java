@@ -2,9 +2,7 @@ package com.notch.heist.service.impl;
 
 import com.notch.heist.domain.Skill;
 import com.notch.heist.repository.SkillRepository;
-import com.notch.heist.rest.dto.SkillDTO;
 import com.notch.heist.service.SkillService;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 @Service

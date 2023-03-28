@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 public class MemberSkillServiceImpl implements MemberSkillService {
 
     private final MemberSkillRepository memberSkillRepository;
-
     private final MemberSkillMapper memberSkillMapper;
 
     public MemberSkillServiceImpl(MemberSkillRepository memberSkillRepository, MemberSkillMapper memberSkillMapper) {

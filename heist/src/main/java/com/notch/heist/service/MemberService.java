@@ -30,4 +30,6 @@ public interface MemberService {
     void changeMemberStatus(Long memberId, MemberStatus memberStatus);
 
     void updateMembersAfterHeist(Set<Member> memberSet, int amountOfMembersToUpdate);
+
+    void updateMembersSkillAfterHeist(Set<Member> membersSet, Set<HeistSkill> skills, int seconds);
 }

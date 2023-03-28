@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -280,6 +281,8 @@ public class HeistServiceImpl implements HeistService {
 
         heist.setStatus(heistStatus);
         heistRepository.save(heist);
+
+        memberService.updateMembersSkillAfterHeist(membersSet, heist.getSkills(), (int) heist.getStartTime().until(heist.getEndTime(), ChronoUnit.SECONDS));
 
         return heistOutcomeDTO;
     }
