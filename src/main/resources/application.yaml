@@ -49,3 +49,7 @@ logging:
 
 heist:
   levelUpTime: 86400
+
+java:
+  runtime:
+    version: 17
